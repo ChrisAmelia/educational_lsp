@@ -1,4 +1,4 @@
-# EducationalLsp
+# EducationalLSP
 
 **TODO: Add description**
 
