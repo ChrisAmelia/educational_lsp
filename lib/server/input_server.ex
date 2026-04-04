@@ -1,6 +1,6 @@
 defmodule EducationalLSP.InputServer do
-  use GenServer
   require Logger
+  use GenServer
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
@@ -8,7 +8,6 @@ defmodule EducationalLSP.InputServer do
 
   @impl true
   def init(_) do
-    Logger.info("InputServer started. Listening on stdin...")
     Process.send_after(self(), :read_input, 0)
     {:ok, nil}
   end
@@ -21,16 +20,46 @@ defmodule EducationalLSP.InputServer do
         {:stop, :normal, state}
 
       {:error, reason} ->
-        Logger.error("Error reading input: #{inspect(reason)}")
+        Logger.info("Error reading input: #{inspect(reason)}")
         Process.send_after(self(), :read_input, 100)
         {:noreply, state}
 
-      message ->
-        message = String.trim(message)
-        response = "hello " <> message
-        IO.puts(response)
-        Process.send_after(self(), :read_input, 0)
-        {:noreply, state}
+      header ->
+        content_length =
+          header |> String.split(":") |> Enum.at(1) |> String.trim() |> String.to_integer()
+
+        message = IO.binread(content_length + 2)
+
+        case Jason.decode(message) do
+          {:ok, json_rpc} -> handle_json_rpc(json_rpc)
+          {:error, _} -> Logger.error("Invalid JSON: #{message}")
+        end
     end
+  end
+
+  defp handle_json_rpc(%{"jsonrpc" => "2.0", "method" => method, "params" => params, "id" => id}) do
+    result = EducationalLSP.LSPServer.handle_request(method, params)
+
+    response =
+      Jason.encode!(%{
+        "jsonrpc" => "2.0",
+        "id" => id,
+        "result" => result
+      })
+
+    IO.puts(encode_message(response))
+  end
+
+  defp handle_json_rpc(%{"jsonrpc" => "2.0", "method" => method, "params" => params}) do
+    EducationalLSP.LSPServer.handle_notification(method, params)
+    Process.send_after(self(), :read_input, 0)
+  end
+
+  defp handle_json_rpc(_) do
+    :ok
+  end
+
+  def encode_message(message) do
+    "Content-Length: #{byte_size(message)}\r\n\r\n#{message}"
   end
 end

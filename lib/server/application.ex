@@ -3,7 +3,7 @@ defmodule EducationalLSP.Application do
 
   @impl true
   def start(_start_type, _start_args) do
-    children = [EducationalLSP.InputServer]
+    children = [EducationalLSP.InputServer, EducationalLSP.LSPServer]
 
     opts = [strategy: :one_for_one, name: EducationalLSP.Supervisor]
     Supervisor.start_link(children, opts)
