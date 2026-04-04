@@ -25,11 +25,7 @@ defmodule EducationalLSP.LSPServer do
     Logger.info("request: [#{method}]")
     Logger.info(inspect(params))
 
-    result =
-      case method do
-        "initialize" -> handle_initialize(params, state)
-        _other -> {:error, "Method not found"}
-      end
+    result = LSP.MethodHandlers.handle_method(method, params)
 
     {:reply, result, state}
   end
@@ -45,30 +41,5 @@ defmodule EducationalLSP.LSPServer do
       end
 
     {:noreply, new_state}
-  end
-
-  defp handle_initialize(_params, _state) do
-    # request = LSP.InitializeRequest.from_json(contents)
-
-    # Logger.info(
-    #  "Connected to #{request.params.clientInfo.name} (#{request.params.clientInfo.version})"
-    # )
-
-    # try do
-    #  response = Jason.encode!(InitializeResponse.new_initialize_response(request.id))
-    #  Logger.info("Sending to client:")
-    #  Logger.info(response)
-    #  IO.puts(RPC.encode_message(response))
-    # rescue
-    #  e -> Logger.warn(inspect(e))
-    # end
-
-    %{
-      "capabilities" => %{
-        "textDocumentSync" => 1,
-        "hoverProvider" => true,
-        "completionProvider" => %{"resolveProvider" => false}
-      }
-    }
   end
 end
