@@ -1,4 +1,9 @@
 defmodule LSP.MethodHandlers do
+  require Logger
+
+  @doc """
+  Dispatches to the appropriate function for the given `method`.
+  """
   @spec handle_method(String.t(), term()) :: term()
   def handle_method(method, params) do
     case method do
@@ -7,12 +12,21 @@ defmodule LSP.MethodHandlers do
     end
   end
 
-  defp handle_initialize(_params) do
-    %{
-      "capabilities" => %{
-        "textDocumentSync" => 1,
+  @spec handle_initialize(map()) :: LSP.InitializeResult.t()
+  defp handle_initialize(params) do
+    Logger.debug("request [initialize]")
+    Logger.debug(Jason.encode!(params))
+
+    %LSP.InitializeResult{
+      capabilities: %{
+        "codeActionProvider" => true,
+        "definitionProvider" => true,
         "hoverProvider" => true,
-        "completionProvider" => %{"resolveProvider" => false}
+        "textDocumentSync" => 1
+      },
+      serverInfo: %{
+        "name" => "Educational LSP",
+        "version" => "0.0.1-Beta"
       }
     }
   end
