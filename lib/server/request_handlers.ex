@@ -8,7 +8,7 @@ defmodule LSP.RequestHandlers do
   def handle_method(method, params) do
     case method do
       "initialize" -> handle_initialize(params)
-      _other -> {:error, "Method not found"}
+      _other -> unknown(method, params)
     end
   end
 
@@ -29,5 +29,13 @@ defmodule LSP.RequestHandlers do
         "version" => "0.0.1-Beta"
       }
     }
+  end
+
+  @spec unknown(String.t(), term()) :: term()
+  defp unknown(method, params) do
+    Logger.debug("request [#{method}] not handled")
+    Logger.debug(Jason.encode!(params))
+
+    {:error, method}
   end
 end

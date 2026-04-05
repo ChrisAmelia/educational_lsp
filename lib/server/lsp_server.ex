@@ -48,8 +48,8 @@ defmodule EducationalLSP.LSPServer do
   end
 
   @impl true
-  def handle_cast({:notification, method, params}, _state) do
-    new_state = LSP.NotificationHandlers.handle_method(method, params)
+  def handle_cast({:notification, method, params}, state) do
+    new_state = LSP.NotificationHandlers.handle_method(method, params, state)
 
     {:noreply, new_state}
   end
