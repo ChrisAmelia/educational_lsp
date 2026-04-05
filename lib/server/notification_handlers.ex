@@ -8,12 +8,23 @@ defmodule LSP.NotificationHandlers do
   def handle_method(method, params, state) do
     case method do
       "initialized" -> handle_initialized(params)
+      "textDocument/didOpen" -> handle_did_open(params)
       _other -> unknown(method, params, state)
     end
   end
 
   @spec handle_initialized(term()) :: atom()
-  defp handle_initialized(_params), do: :initialized
+  defp handle_initialized(_params), do: :noreply
+
+  @spec handle_did_open(term()) :: atom()
+  defp handle_did_open(params) do
+    Logger.debug("notification [textDocument/didOpen]")
+    Logger.debug(Jason.encode!(params))
+
+    State.open_document(params["textDocument"]["uri"], params["textDocument"]["text"])
+
+    :noreply
+  end
 
   @spec unknown(String.t(), term(), atom()) :: term()
   defp unknown(method, params, state) do

@@ -8,6 +8,8 @@ defmodule EducationalLSP.LSPServer do
 
   @impl true
   def init(_) do
+    State.new_state()
+
     Logger.info("LSP Server initialized")
     {:ok, %{client_pid: nil, state: :initializing}}
   end
