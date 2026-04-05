@@ -1,4 +1,4 @@
-defmodule LSP.MethodHandlers do
+defmodule LSP.RequestHandlers do
   require Logger
 
   @doc """

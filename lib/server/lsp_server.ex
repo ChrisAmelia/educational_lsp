@@ -45,7 +45,7 @@ defmodule EducationalLSP.LSPServer do
     Logger.info("request: [#{method}]")
     Logger.info(inspect(params))
 
-    result = LSP.MethodHandlers.handle_method(method, params)
+    result = LSP.RequestHandlers.handle_method(method, params)
 
     {:reply, result, state}
   end
