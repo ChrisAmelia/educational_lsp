@@ -42,23 +42,14 @@ defmodule EducationalLSP.LSPServer do
 
   @impl true
   def handle_call({:request, method, params}, _from, state) do
-    Logger.info("request: [#{method}]")
-    Logger.info(inspect(params))
-
     result = LSP.RequestHandlers.handle_method(method, params)
 
     {:reply, result, state}
   end
 
   @impl true
-  def handle_cast({:notification, method, params}, state) do
-    Logger.info("notification: [#{method}]")
-    Logger.info(inspect(params))
-
-    new_state =
-      case method do
-        _other -> state
-      end
+  def handle_cast({:notification, method, params}, _state) do
+    new_state = LSP.NotificationHandlers.handle_method(method, params)
 
     {:noreply, new_state}
   end
