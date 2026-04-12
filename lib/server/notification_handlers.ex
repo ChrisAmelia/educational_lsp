@@ -1,5 +1,10 @@
 defmodule LSP.NotificationHandlers do
+  @moduledoc """
+  Handles the LSP notifications received from the client.
+  """
+
   require Logger
+  alias EducationalLSP.LSPServer
 
   @doc """
   Dispatches to the appropriate function for the given `method`.
@@ -21,7 +26,15 @@ defmodule LSP.NotificationHandlers do
     Logger.debug("notification [textDocument/didOpen]")
     Logger.debug(Jason.encode!(params))
 
-    State.open_document(params["textDocument"]["uri"], params["textDocument"]["text"])
+    Task.start(fn ->
+      diagnostics =
+        State.open_document(params["textDocument"]["uri"], params["textDocument"]["text"])
+
+      LSPServer.send_notification_to_client("textDocument/publishDiagnostics", %{
+        "uri" => params["textDocument"]["uri"],
+        "diagnostics" => diagnostics
+      })
+    end)
 
     :noreply
   end

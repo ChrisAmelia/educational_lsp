@@ -1,4 +1,8 @@
 defmodule EducationalLSP.LSPServer do
+  @moduledoc """
+  The main GenServer for the LSP implementation.
+  """
+
   require Logger
   use GenServer
 
@@ -42,6 +46,18 @@ defmodule EducationalLSP.LSPServer do
     GenServer.cast(__MODULE__, {:notification, method, params})
   end
 
+  @doc """
+  Sends a notification to the client.
+
+  ## Parameters
+
+    - `method`: the method to be invoked.
+    - `params`: the method's params.
+  """
+  def send_notification_to_client(method, params) do
+    GenServer.cast(__MODULE__, {:send_notification, method, params})
+  end
+
   @impl true
   def handle_call({:request, method, params}, _from, state) do
     result = LSP.RequestHandlers.handle_method(method, params)
@@ -54,5 +70,19 @@ defmodule EducationalLSP.LSPServer do
     new_state = LSP.NotificationHandlers.handle_method(method, params, state)
 
     {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_cast({:send_notification, method, params}, state) do
+    response = %{
+      "jsonrpc" => "2.0",
+      "method" => method,
+      "params" => params
+    }
+
+    message = Jason.encode!(response)
+    IO.puts(RPC.encode_message(message))
+
+    {:noreply, state}
   end
 end

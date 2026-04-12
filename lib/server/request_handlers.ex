@@ -1,4 +1,8 @@
 defmodule LSP.RequestHandlers do
+  @moduledoc """
+  Handles the LSP requests received from the client.
+  """
+
   require Logger
 
   @doc """

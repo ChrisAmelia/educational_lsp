@@ -1,0 +1,46 @@
+defmodule Diagnostic.Position do
+  @moduledoc """
+  Position in a text document expressed as zero-based line and zero-based character offset.
+  """
+
+  @typedoc """
+    Position in a text document expressed as zero-based line and zero-based character offset.
+  """
+  @type position :: %__MODULE__{line: integer, character: integer}
+  @derive Jason.Encoder
+  defstruct [:line, :character]
+end
+
+defmodule Diagnostic.Range do
+  @moduledoc """
+  A range is a text document expressed as (zero-based) start and end positions.
+  """
+
+  @typedoc """
+    A range is a text document expressed as (zero-based) start and end positions.
+  """
+  @type range :: %__MODULE__{
+          start: Diagnostic.Position.position(),
+          end: Diagnostic.Position.position()
+        }
+  @derive Jason.Encoder
+  defstruct [:start, :end]
+end
+
+defmodule Diagnostic do
+  @moduledoc """
+  Represents a diagnostic, such as a compiler error or warning.
+  """
+
+  @typedoc """
+    Represents a diagnostic, such as a compiler error or warning.
+  """
+  @derive Jason.Encoder
+  @type diagnostic :: %__MODULE__{
+          range: Diagnostic.Range.range(),
+          severity: integer(),
+          source: String.t(),
+          message: String.t()
+        }
+  defstruct [:range, :severity, :source, :message]
+end

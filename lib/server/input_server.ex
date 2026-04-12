@@ -1,4 +1,8 @@
 defmodule EducationalLSP.InputServer do
+  @moduledoc """
+  A GenServer that reads and processes JSON-RPC 2.0 message from standard input.
+  """
+
   require Logger
   use GenServer
 
@@ -47,7 +51,7 @@ defmodule EducationalLSP.InputServer do
         "result" => result
       })
 
-    IO.puts(encode_message(response))
+    IO.write(RPC.encode_message(response))
   end
 
   defp handle_json_rpc(%{"jsonrpc" => "2.0", "method" => method, "params" => params}) do
@@ -57,9 +61,5 @@ defmodule EducationalLSP.InputServer do
 
   defp handle_json_rpc(_) do
     :ok
-  end
-
-  def encode_message(message) do
-    "Content-Length: #{byte_size(message)}\r\n\r\n#{message}"
   end
 end
