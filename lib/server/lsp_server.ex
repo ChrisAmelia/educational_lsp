@@ -81,7 +81,7 @@ defmodule EducationalLSP.LSPServer do
     }
 
     message = Jason.encode!(response)
-    IO.puts(RPC.encode_message(message))
+    IO.write(RPC.encode_message(message))
 
     {:noreply, state}
   end
