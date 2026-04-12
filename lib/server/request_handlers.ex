@@ -26,7 +26,12 @@ defmodule LSP.RequestHandlers do
         "codeActionProvider" => true,
         "definitionProvider" => true,
         "hoverProvider" => true,
-        "textDocumentSync" => 1
+        "textDocumentSync" => %{
+          "openClose" => true,
+          "save" => %{
+            "includeText" => true
+          }
+        }
       },
       serverInfo: %{
         "name" => "Educational LSP",

@@ -14,7 +14,7 @@ defmodule LSP.NotificationHandlers do
     case method do
       "initialized" -> handle_initialized(params)
       "textDocument/didOpen" -> handle_did_open(params)
-      "textDocument/didChange" -> handle_did_change(params)
+      "textDocument/didSave" -> handle_did_save(params)
       _other -> unknown(method, params, state)
     end
   end
@@ -40,21 +40,19 @@ defmodule LSP.NotificationHandlers do
     :noreply
   end
 
-  @spec handle_did_change(term()) :: atom()
-  defp handle_did_change(params) do
-    Logger.info("notification [textDocument/didChange]")
-    Logger.info(inspect(params, limit: 5, printable_limit: 100))
+  @spec handle_did_save(term()) :: atom()
+  defp handle_did_save(params) do
+    Logger.info("notification [textDocument/didSave]")
+    Logger.info(Jason.encode!(params))
 
-    for change <- params["contentChanges"] do
-      Task.start(fn ->
-        diagnostics = State.update_document(params["textDocument"], change["text"])
+    Task.start(fn ->
+      diagnostics = State.update_document(params["textDocument"]["uri"], params["text"])
 
-        LSPServer.send_notification_to_client("textDocument/publishDiagnostics", %{
-          "uri" => params["textDocument"]["uri"],
-          "diagnostics" => diagnostics
-        })
-      end)
-    end
+      LSPServer.send_notification_to_client("textDocument/publishDiagnostics", %{
+        "uri" => params["textDocument"]["uri"],
+        "diagnostics" => diagnostics
+      })
+    end)
 
     :noreply
   end
