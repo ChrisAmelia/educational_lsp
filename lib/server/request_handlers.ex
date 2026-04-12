@@ -12,6 +12,7 @@ defmodule LSP.RequestHandlers do
   def handle_method(method, params) do
     case method do
       "initialize" -> handle_initialize(params)
+      "textDocument/hover" -> handle_hover(params)
       _other -> unknown(method, params)
     end
   end
@@ -37,6 +38,22 @@ defmodule LSP.RequestHandlers do
         "name" => "Educational LSP",
         "version" => "0.0.1-Beta"
       }
+    }
+  end
+
+  @spec handle_hover(map()) :: LSP.HoverResult.hover_result()
+  defp handle_hover(params) do
+    Logger.debug("request [hover]")
+    Logger.debug(Jason.encode!(params))
+
+    uri = params["textDocument"]["uri"]
+    line_number = params["position"]["line"]
+    index = params["position"]["character"]
+    word = State.get_word_under_cursor(uri, line_number, index)
+    definition = Dictionary.get_definition(word)
+
+    %LSP.HoverResult{
+      contents: definition
     }
   end
 
