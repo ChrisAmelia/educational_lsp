@@ -35,9 +35,16 @@ defmodule EducationalLSP.InputServer do
         message = IO.binread(content_length + 2)
 
         case Jason.decode(message) do
-          {:ok, json_rpc} -> handle_json_rpc(json_rpc)
-          {:error, _} -> Logger.error("Invalid JSON: #{message}")
+          {:ok, json_rpc} ->
+            handle_json_rpc(json_rpc)
+
+          {:error, reason} ->
+            Logger.error("Invalid JSON: #{reason}")
         end
+
+        # Schedule next read AFTER processing
+        Process.send_after(self(), :read_input, 0)
+        {:noreply, state}
     end
   end
 
@@ -56,10 +63,10 @@ defmodule EducationalLSP.InputServer do
 
   defp handle_json_rpc(%{"jsonrpc" => "2.0", "method" => method, "params" => params}) do
     EducationalLSP.LSPServer.handle_notification(method, params)
-    Process.send_after(self(), :read_input, 0)
   end
 
-  defp handle_json_rpc(_) do
-    :ok
+  defp handle_json_rpc(other) do
+    Logger.debug("DEBUG: No pattern matched. Received:")
+    Logger.debug(inspect(other, limit: 10, printable_limit: 100))
   end
 end

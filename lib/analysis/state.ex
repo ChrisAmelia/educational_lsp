@@ -32,6 +32,18 @@ defmodule State do
   end
 
   @doc """
+  Updates the given `uri` with `text`.
+  """
+  @spec update_document(String.t(), String.t()) :: [Diagnostic.diagnostic()]
+  def update_document(uri, text) do
+    Agent.update(__MODULE__, fn state ->
+      %{state | documents: Map.put(state.documents, uri, text)}
+    end)
+
+    TextAnalyzer.analyze(text)
+  end
+
+  @doc """
   Retrieves the document for the given `uri`.
 
   ## Parameters
