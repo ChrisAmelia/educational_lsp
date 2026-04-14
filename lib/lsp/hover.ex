@@ -12,7 +12,7 @@ defmodule LSP.HoverResult do
     includes documentation or type information about the symbol.
   """
 
-  @type hover_result :: %__MODULE__{
+  @type t :: %__MODULE__{
           contents: String.t()
         }
   @derive Jason.Encoder

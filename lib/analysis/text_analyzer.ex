@@ -14,7 +14,7 @@ defmodule Analysis.TextAnalyzer do
 
     A list of diagnostics.
   """
-  @spec analyze(String.t()) :: [Diagnostic.diagnostic()]
+  @spec analyze(String.t()) :: [Diagnostic.t()]
   def analyze(text) do
     diagnostics =
       text

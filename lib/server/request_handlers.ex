@@ -41,7 +41,7 @@ defmodule LSP.RequestHandlers do
     }
   end
 
-  @spec handle_hover(map()) :: LSP.HoverResult.hover_result()
+  @spec handle_hover(map()) :: LSP.HoverResult.t()
   defp handle_hover(params) do
     Logger.debug("request [hover]")
     Logger.debug(Jason.encode!(params))

@@ -10,7 +10,7 @@ defmodule State do
   @typedoc """
   Simple map of files to contents
   """
-  @type state() :: %__MODULE__{documents: map()}
+  @type t() :: %__MODULE__{documents: map()}
 
   @doc """
   Creates a new state.
@@ -22,7 +22,7 @@ defmodule State do
   @doc """
   Adds the given document, `uri` and `text`, to the inner state.
   """
-  @spec open_document(String.t(), String.t()) :: [Diagnostic.diagnostic()]
+  @spec open_document(String.t(), String.t()) :: [Diagnostic.t()]
   def open_document(uri, text) do
     Agent.update(__MODULE__, fn state ->
       %{state | documents: Map.put(state.documents, uri, text)}
@@ -34,7 +34,7 @@ defmodule State do
   @doc """
   Updates the given `uri` with `text`.
   """
-  @spec update_document(String.t(), String.t()) :: [Diagnostic.diagnostic()]
+  @spec update_document(String.t(), String.t()) :: [Diagnostic.t()]
   def update_document(uri, text) do
     Agent.update(__MODULE__, fn state ->
       %{state | documents: Map.put(state.documents, uri, text)}
