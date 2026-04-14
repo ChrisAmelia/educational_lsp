@@ -36,7 +36,13 @@ defmodule EducationalLSP.InputServer do
 
         case Jason.decode(message) do
           {:ok, json_rpc} ->
-            handle_json_rpc(json_rpc)
+            try do
+              handle_json_rpc(json_rpc)
+            rescue
+              e ->
+                Logger.error("Error handling JSON-RPC: #{inspect(e)}")
+                Logger.error(Exception.format_stacktrace(__STACKTRACE__))
+            end
 
           {:error, reason} ->
             Logger.error("Invalid JSON: #{reason}")
