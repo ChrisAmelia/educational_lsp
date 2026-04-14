@@ -24,7 +24,8 @@ defmodule EducationalLSP.MixProject do
   defp deps do
     [
       {:jason, "~> 1.4"},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:tesla, "~> 1.11"}
     ]
   end
 end

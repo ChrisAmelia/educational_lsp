@@ -70,6 +70,8 @@ defmodule State do
       end
     end)
     |> elem(0)
+    |> String.replace(",", "")
+    |> String.replace(".", "")
   end
 
   @doc """
