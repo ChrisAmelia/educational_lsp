@@ -21,7 +21,7 @@ defmodule EducationalLSP.InputServer do
     case IO.read(:stdio, :line) do
       :eof ->
         Logger.info("EOF received. Shutting down.")
-        {:stop, :normal, state}
+        System.stop()
 
       {:error, reason} ->
         Logger.info("Error reading input: #{inspect(reason)}")
@@ -63,6 +63,11 @@ defmodule EducationalLSP.InputServer do
 
   defp handle_json_rpc(%{"jsonrpc" => "2.0", "method" => method, "params" => params}) do
     EducationalLSP.LSPServer.handle_notification(method, params)
+  end
+
+  defp handle_json_rpc(%{"id" => 2, "jsonrpc" => "2.0", "method" => "shutdown"}) do
+    Logger.info("Shutdown request from client. Shutting down.")
+    System.stop()
   end
 
   defp handle_json_rpc(other) do
