@@ -50,7 +50,12 @@ defmodule LSP.RequestHandlers do
     line_number = params["position"]["line"]
     index = params["position"]["character"]
     word = State.get_word_under_cursor(uri, line_number, index)
-    definition = Dictionary.get_definition(word)
+
+    definition =
+      case word do
+        "" -> nil
+        word -> Dictionary.get_definition(word)
+      end
 
     %LSP.HoverResult{
       contents: definition
