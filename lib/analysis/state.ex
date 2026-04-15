@@ -2,8 +2,9 @@ defmodule State do
   @moduledoc """
   Represents the inner state of the language server.
   """
-
   alias Analysis.TextAnalyzer
+
+  require Logger
 
   defstruct documents: %{}
 
@@ -55,30 +56,37 @@ defmodule State do
   ## Returns
 
     * The word under the cursor.
-    * An empty string if the cursor is on an empty space.
+    * `:not_word` if the cursor is on an empty space.
   """
-  @spec get_word_under_cursor(String.t(), integer(), integer()) :: String.t()
+  @spec get_word_under_cursor(String.t(), integer(), integer()) :: String.t() | :not_word
   def get_word_under_cursor(uri, line_number, index) do
     document = State.get(uri)
     line = document |> String.split("\n") |> Enum.at(line_number)
     words = String.split(line)
 
-    Enum.with_index(words, 0)
-    |> Enum.reduce({nil, 0}, fn {word, _word_index}, {acc, current_index} ->
-      word_length = String.length(word)
+    under_cursor =
+      Enum.with_index(words, 0)
+      |> Enum.reduce({nil, 0}, fn {word, _word_index}, {acc, current_index} ->
+        word_length = String.length(word)
 
-      if index >= current_index and index < current_index + word_length do
-        {word, current_index + word_length}
-      else
-        # +1 for the space
-        {acc, current_index + word_length + 1}
-      end
-    end)
-    |> elem(0)
-    |> String.replace(",", "")
-    |> String.replace(".", "")
-  rescue
-    _ -> ""
+        if index >= current_index and index < current_index + word_length do
+          {word, current_index + word_length}
+        else
+          # +1 for the space
+          {acc, current_index + word_length + 1}
+        end
+      end)
+      |> elem(0)
+
+    case under_cursor do
+      nil ->
+        :not_word
+
+      word ->
+        word
+        |> String.replace(",", "")
+        |> String.replace(".", "")
+    end
   end
 
   @doc """

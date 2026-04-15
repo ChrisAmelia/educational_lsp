@@ -53,7 +53,7 @@ defmodule LSP.RequestHandlers do
 
     definition =
       case word do
-        "" -> nil
+        :not_word -> nil
         word -> Dictionary.get_definition(word)
       end
 
