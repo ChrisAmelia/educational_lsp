@@ -33,7 +33,7 @@ Build the server with:
 mix escript.build
 ```
 
-It produces an executable `educational_lsp`.
+This produces an executable `educational_lsp`.
 
 ## Run the server in Neovim
 
@@ -51,7 +51,8 @@ vim.lsp.enable('educationalsp')
 ### Definition
 
 Provide the definition of the word by using the hover request, in Neovim, by default, press `K` (`vim.lsp.buf.hover()`) in normal mode.  
-Under the hood, this is done by using [sdcv](https://wiki.archlinux.org/title/Sdcv).
+Under the hood, this is done by querying [Free Dictionary API](https://dictionaryapi.dev/) (default) or using [sdcv](https://wiki.archlinux.org/title/Sdcv).  
+This behavior can be configured by changing the value of `priv/config.json` to `"dictionaryapi"` or `"sdcv"`.
 
 ### Diagnostics
 
