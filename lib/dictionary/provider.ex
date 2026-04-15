@@ -1,10 +1,10 @@
 defmodule Dictionary.Provider do
-  @providers ["dictionaryapi", "sdcv"]
-  @config_path Application.app_dir(:educational_lsp, "priv/config.json")
-
   @moduledoc """
   Manages dictionary provider. 
   """
+
+  @providers ["dictionaryapi", "sdcv"]
+  @config_path Application.app_dir(:educational_lsp, "priv/config.json")
 
   defstruct [:provider]
 
@@ -30,7 +30,7 @@ defmodule Dictionary.Provider do
   end
 
   defp validate_config!(config) do
-    unless config["dictionary"] in @providers do
+    if config["dictionary"] not in @providers do
       raise "Invalid dictionary option. Must be in #{inspect(@providers)}"
     end
   end

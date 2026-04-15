@@ -3,8 +3,9 @@ defmodule EducationalLSP.LSPServer do
   The main GenServer for the LSP implementation.
   """
 
-  require Logger
   use GenServer
+
+  require Logger
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)

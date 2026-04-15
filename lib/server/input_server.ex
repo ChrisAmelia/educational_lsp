@@ -3,8 +3,9 @@ defmodule EducationalLSP.InputServer do
   A GenServer that reads and processes JSON-RPC 2.0 message from standard input.
   """
 
-  require Logger
   use GenServer
+
+  require Logger
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)

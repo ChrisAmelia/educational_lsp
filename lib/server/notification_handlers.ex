@@ -3,8 +3,9 @@ defmodule LSP.NotificationHandlers do
   Handles the LSP notifications received from the client.
   """
 
-  require Logger
   alias EducationalLSP.LSPServer
+
+  require Logger
 
   @doc """
   Dispatches to the appropriate function for the given `method`.

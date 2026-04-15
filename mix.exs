@@ -25,7 +25,8 @@ defmodule EducationalLSP.MixProject do
     [
       {:jason, "~> 1.4"},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
-      {:tesla, "~> 1.11"}
+      {:tesla, "~> 1.11"},
+      {:quokka, "~> 2.12", only: [:dev, :test], runtime: false}
     ]
   end
 end

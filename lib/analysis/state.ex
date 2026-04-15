@@ -3,9 +3,9 @@ defmodule State do
   Represents the inner state of the language server.
   """
 
-  defstruct documents: %{}
-
   alias Analysis.TextAnalyzer
+
+  defstruct documents: %{}
 
   @typedoc """
   Simple map of files to contents
@@ -59,28 +59,26 @@ defmodule State do
   """
   @spec get_word_under_cursor(String.t(), integer(), integer()) :: String.t()
   def get_word_under_cursor(uri, line_number, index) do
-    try do
-      document = State.get(uri)
-      line = document |> String.split("\n") |> Enum.at(line_number)
-      words = String.split(line)
+    document = State.get(uri)
+    line = document |> String.split("\n") |> Enum.at(line_number)
+    words = String.split(line)
 
-      Enum.with_index(words, 0)
-      |> Enum.reduce({nil, 0}, fn {word, _word_index}, {acc, current_index} ->
-        word_length = String.length(word)
+    Enum.with_index(words, 0)
+    |> Enum.reduce({nil, 0}, fn {word, _word_index}, {acc, current_index} ->
+      word_length = String.length(word)
 
-        if index >= current_index and index < current_index + word_length do
-          {word, current_index + word_length}
-        else
-          # +1 for the space
-          {acc, current_index + word_length + 1}
-        end
-      end)
-      |> elem(0)
-      |> String.replace(",", "")
-      |> String.replace(".", "")
-    rescue
-      _ -> ""
-    end
+      if index >= current_index and index < current_index + word_length do
+        {word, current_index + word_length}
+      else
+        # +1 for the space
+        {acc, current_index + word_length + 1}
+      end
+    end)
+    |> elem(0)
+    |> String.replace(",", "")
+    |> String.replace(".", "")
+  rescue
+    _ -> ""
   end
 
   @doc """
