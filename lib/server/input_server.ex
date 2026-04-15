@@ -72,7 +72,7 @@ defmodule EducationalLSP.InputServer do
     EducationalLSP.LSPServer.handle_notification(method, params)
   end
 
-  defp handle_json_rpc(%{"id" => 2, "jsonrpc" => "2.0", "method" => "shutdown"}) do
+  defp handle_json_rpc(%{"id" => _id, "jsonrpc" => "2.0", "method" => "shutdown"}) do
     Logger.info("Shutdown request from client. Shutting down.")
     System.stop()
   end
