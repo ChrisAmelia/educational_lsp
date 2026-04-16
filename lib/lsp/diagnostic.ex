@@ -37,7 +37,7 @@ defmodule Diagnostic do
   """
   @derive Jason.Encoder
   @type t :: %__MODULE__{
-          range: Diagnostic.Range.range(),
+          range: LSP.Position.t(),
           severity: integer(),
           source: String.t(),
           message: String.t()
