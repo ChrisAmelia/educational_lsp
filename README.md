@@ -58,6 +58,11 @@ This behavior can be configured by changing the value of `priv/config.json` to `
 
 Provide an error diagnostic when `VS Code` is present in the document.
 
+### Completions
+
+Provide words to suggest based on a list of words.
+This can be configured by changing the content of `priv/words.txt`.
+
 ### Code Actions
 
 When `VS Code` is present, suggest these actions:

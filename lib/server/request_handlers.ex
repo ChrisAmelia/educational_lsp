@@ -14,6 +14,7 @@ defmodule LSP.RequestHandlers do
       "initialize" -> handle_initialize(params)
       "textDocument/hover" -> handle_hover(params)
       "textDocument/codeAction" -> handle_code_action(params)
+      "textDocument/completion" -> handle_completion(params)
       _other -> unknown(method, params)
     end
   end
@@ -26,6 +27,7 @@ defmodule LSP.RequestHandlers do
     %LSP.InitializeResult{
       capabilities: %{
         "codeActionProvider" => true,
+        "completionProvider" => %{},
         "definitionProvider" => true,
         "hoverProvider" => true,
         "textDocumentSync" => %{
@@ -71,6 +73,17 @@ defmodule LSP.RequestHandlers do
     uri = params["textDocument"]["uri"]
 
     State.get_code_actions(uri)
+  end
+
+  @spec handle_completion(map()) :: [LSP.CompletionItem.t()]
+  defp handle_completion(params) do
+    Logger.debug("request [completion]")
+    Logger.debug(Jason.encode!(params))
+
+    FileCache.get_list_of_words()
+    |> Enum.map(fn item ->
+      %LSP.CompletionItem{label: item, kind: LSP.CompletionItemKind.text()}
+    end)
   end
 
   @spec unknown(String.t(), term()) :: term()
