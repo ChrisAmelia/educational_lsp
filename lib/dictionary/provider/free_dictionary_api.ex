@@ -12,10 +12,10 @@ defmodule Dictionary.Provider.FreeDictionaryAPI do
     {_, env} = Tesla.get(client, "https://api.dictionaryapi.dev/api/v2/entries/en/" <> word)
     data = Jason.decode!(env.body)
 
-    phonetic = get_phonetics(data)
+    phonetics = get_phonetics(data)
     definitions = get_definitions(data)
 
-    phonetic <>
+    phonetics <>
       "\n\n" <>
       definitions
   rescue
