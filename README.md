@@ -58,6 +58,13 @@ This behavior can be configured by changing the value of `priv/config.json` to `
 
 Provide an error diagnostic when `VS Code` is present in the document.
 
+### Code Actions
+
+When `VS Code` is present, suggest these actions:
+
+1. Replace `VS Code` with Neovim.
+1. Censor `VS Code` to `VS C*de`.
+
 ## Acknowledgement
 
 Thanks to https://github.com/tjdevries for explaining how to implement the LSP,

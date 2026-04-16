@@ -24,7 +24,7 @@ defmodule Analysis.TextAnalyzer do
         case :binary.match(line, "VS Code") do
           {start, length} ->
             diagnostic = %Diagnostic{
-              range: line_range(row, start, start + length),
+              range: LSP.Range.line_range(row, start, start + length),
               severity: 1,
               message: "VS C*de is not allowed.",
               source: "Educational LSP"
@@ -38,18 +38,5 @@ defmodule Analysis.TextAnalyzer do
       end)
 
     diagnostics
-  end
-
-  defp line_range(line, start_index, end_index) do
-    %{
-      "start" => %{
-        "line" => line,
-        "character" => start_index
-      },
-      "end" => %{
-        "line" => line,
-        "character" => end_index
-      }
-    }
   end
 end

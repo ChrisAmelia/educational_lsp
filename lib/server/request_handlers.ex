@@ -13,6 +13,7 @@ defmodule LSP.RequestHandlers do
     case method do
       "initialize" -> handle_initialize(params)
       "textDocument/hover" -> handle_hover(params)
+      "textDocument/codeAction" -> handle_code_action(params)
       _other -> unknown(method, params)
     end
   end
@@ -60,6 +61,16 @@ defmodule LSP.RequestHandlers do
     %LSP.HoverResult{
       contents: definition
     }
+  end
+
+  @spec handle_code_action(map()) :: [LSP.CodeAction.t()]
+  defp handle_code_action(params) do
+    Logger.debug("request [codeAction]")
+    Logger.debug(Jason.encode!(params))
+
+    uri = params["textDocument"]["uri"]
+
+    State.get_code_actions(uri)
   end
 
   @spec unknown(String.t(), term()) :: term()

@@ -45,6 +45,61 @@ defmodule State do
   end
 
   @doc """
+  Returns the available code actions for the given `uri`.
+
+  ## Parameters
+
+    * `uri`: the document's URI.
+  """
+  @spec get_code_actions(String.t()) :: [LSP.CodeAction.t()] | nil
+  def get_code_actions(uri) do
+    text = State.get(uri)
+
+    actions =
+      String.split(text, "\n")
+      |> Enum.with_index()
+      |> Enum.reduce([], fn {line, row}, acc ->
+        case :binary.match(line, "VS Code") do
+          {start, length} ->
+            replace_change = %{
+              uri => [
+                %LSP.TextEdit{
+                  range: LSP.Range.line_range(row, start, start + length),
+                  newText: "Neovim"
+                }
+              ]
+            }
+
+            action = %LSP.CodeAction{
+              title: "Replace VS C*de with a superior editor",
+              edit: %LSP.WorkspaceEdit{changes: replace_change}
+            }
+
+            censor_change = %{
+              uri => [
+                %LSP.TextEdit{
+                  range: LSP.Range.line_range(row, start, start + length),
+                  newText: "VS C*de"
+                }
+              ]
+            }
+
+            other_action = %LSP.CodeAction{
+              title: "Censor to VS C*de",
+              edit: %LSP.WorkspaceEdit{changes: censor_change}
+            }
+
+            [action, other_action | acc]
+
+          _ ->
+            acc
+        end
+      end)
+
+    actions
+  end
+
+  @doc """
   Returns the word the cursor.
 
   ## Parameters

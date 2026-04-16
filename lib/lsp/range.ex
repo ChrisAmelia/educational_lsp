@@ -5,7 +5,8 @@ defmodule LSP.Range do
   """
 
   @typedoc ~S"""
-    A range is a text document expressed as (zero-based) start and end positions.
+    * `start`: The range's start position.
+    * `end`: The range's end position.
   """
   @type t :: %__MODULE__{
           start: LSP.Position.t(),
@@ -13,4 +14,21 @@ defmodule LSP.Range do
         }
   @derive Jason.Encoder
   defstruct [:start, :end]
+
+  @doc """
+  Returns the ranges for the given start and end.
+  """
+  @spec line_range(integer(), integer(), integer()) :: LSP.Range.t()
+  def line_range(line, start_index, end_index) do
+    %LSP.Range{
+      start: %LSP.Position{
+        line: line,
+        character: start_index
+      },
+      end: %LSP.Position{
+        line: line,
+        character: end_index
+      }
+    }
+  end
 end
