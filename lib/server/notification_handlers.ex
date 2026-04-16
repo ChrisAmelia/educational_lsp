@@ -20,7 +20,7 @@ defmodule LSP.NotificationHandlers do
     end
   end
 
-  @spec handle_initialized(term()) :: atom()
+  @spec handle_initialized(map()) :: atom()
   defp handle_initialized(_params), do: :noreply
 
   @spec handle_did_open(term()) :: atom()
@@ -41,7 +41,7 @@ defmodule LSP.NotificationHandlers do
     :noreply
   end
 
-  @spec handle_did_save(term()) :: atom()
+  @spec handle_did_save(map()) :: atom()
   defp handle_did_save(params) do
     Logger.info("notification [textDocument/didSave]")
     Logger.info(Jason.encode!(params))
