@@ -22,55 +22,55 @@ defmodule LSP.CompletionItemKind do
   Completion item kinds constants.
   """
   @type t ::
-          :text
-          | :method
-          | :function
-          | :constructor
-          | :field
-          | :variable
-          | :class
-          | :interface
-          | :module
-          | :property
-          | :unit
-          | :value
-          | :enum
-          | :keyword
-          | :snippet
-          | :color
-          | :file
-          | :reference
-          | :folder
-          | :enumMember
-          | :constant
-          | :struct
-          | :event
-          | :operator
-          | :typeParameter
+          1
+          | 2
+          | 3
+          | 4
+          | 5
+          | 6
+          | 7
+          | 8
+          | 9
+          | 10
+          | 11
+          | 12
+          | 13
+          | 14
+          | 15
+          | 16
+          | 17
+          | 18
+          | 19
+          | 20
+          | 21
+          | 22
+          | 23
+          | 24
+          | 25
 
-  def text, do: :text
-  def method, do: :method
-  def function, do: :function
-  def constructor, do: :constructor
-  def field, do: :field
-  def variable, do: :variable
-  def class, do: :class
-  def interface, do: :interface
-  def module, do: :module
-  def property, do: :property
-  def unit, do: :unit
-  def value, do: :value
-  def enum, do: :enum
-  def keyword, do: :keyword
-  def snippet, do: :snippet
-  def color, do: :color
-  def file, do: :file
-  def reference, do: :reference
-  def folder, do: :folder
-  def enumMember, do: :enumMember
-  def constant, do: :constant
-  def struct, do: :struct
-  def event, do: :event
-  def operator, do: :operator
-  def type_parameter, do: :typeParameter
+  def text, do: 1
+  def method, do: 2
+  def function, do: 3
+  def constructor, do: 4
+  def field, do: 5
+  def variable, do: 6
+  def class, do: 7
+  def interface, do: 8
+  def module, do: 9
+  def property, do: 10
+  def unit, do: 11
+  def value, do: 12
+  def enum, do: 13
+  def keyword, do: 14
+  def snippet, do: 15
+  def color, do: 16
+  def file, do: 17
+  def reference, do: 18
+  def folder, do: 19
+  def enumMember, do: 20
+  def constant, do: 21
+  def struct, do: 22
+  def event, do: 23
+  def operator, do: 24
+  def type_parameter, do: 25
 end
