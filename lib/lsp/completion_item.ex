@@ -4,6 +4,8 @@ defmodule LSP.CompletionItem do
   """
 
   @typedoc ~S"""
+  ## Fields
+
     * `label`: The label of this completion item.
     * `kind`: The kind of completion item.
   """

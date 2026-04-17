@@ -5,6 +5,8 @@ defmodule LSP.CodeAction do
   """
 
   @typedoc ~S"""
+  ## Fields
+
     * `title`: A short, human-readable, title for this code action.
     * `edit`: The workspace edit this code action performs.
   """
@@ -23,6 +25,8 @@ defmodule LSP.TextEdit do
   """
 
   @typedoc ~S"""
+  ## Fields
+
     * `range`: The range of the text document to be manipulated.
     * `newText`: The string to be inserted.
   """
@@ -41,6 +45,8 @@ defmodule LSP.WorkspaceEdit do
   """
 
   @typedoc ~S"""
+  ## Fields
+
     * `changes`: Holds changes to existing resources.
   """
   @type t :: %__MODULE__{
