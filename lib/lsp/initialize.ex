@@ -7,13 +7,12 @@ defmodule LSP.InitializeResult do
   defstruct [:capabilities, :serverInfo]
 
   @typedoc """
-  The server response to a `initialize` request.
   # Fields
 
     * `capabilities`: server capabilities.
     * `serverInfo`: may contain the name and the version.
   """
-  @type initialize_result() :: %__MODULE__{
+  @type t :: %__MODULE__{
           capabilities: map(),
           serverInfo: map() | nil
         }
