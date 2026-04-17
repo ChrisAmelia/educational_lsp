@@ -4,6 +4,8 @@ defmodule Diagnostic do
   """
 
   @typedoc ~S"""
+  ## Fields
+
     * `range`: The range at which the message applies.
     * `severity`: The diagnostic's severity.
     * `source`:  A human-readable string describing the source of this diagnostic.

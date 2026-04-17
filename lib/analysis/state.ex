@@ -11,7 +11,7 @@ defmodule State do
   @typedoc """
   Simple map of files to contents
   """
-  @type t() :: %__MODULE__{documents: map()}
+  @type t() :: %__MODULE__{documents: %{String.t() => String.t()}}
 
   @doc """
   Creates a new state.
