@@ -23,7 +23,7 @@ defmodule LSP.NotificationHandlers do
   @spec handle_initialized(map()) :: atom()
   defp handle_initialized(_params), do: :noreply
 
-  @spec handle_did_open(term()) :: atom()
+  @spec handle_did_open(map()) :: atom()
   defp handle_did_open(params) do
     Logger.debug("notification [textDocument/didOpen]")
     Logger.debug(Jason.encode!(params))
