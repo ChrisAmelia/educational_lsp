@@ -5,7 +5,7 @@ defmodule LSP.Range do
   """
 
   @typedoc ~S"""
-  ## Fields
+  # Fields
 
     * `start`: The range's start position.
     * `end`: The range's end position.
