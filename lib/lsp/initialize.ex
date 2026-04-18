@@ -7,7 +7,7 @@ defmodule LSP.InitializeResult do
   defstruct [:capabilities, :serverInfo]
 
   @typedoc """
-  # Fields
+  ## Fields
 
     * `capabilities`: server capabilities.
     * `serverInfo`: may contain the name and the version.

@@ -4,7 +4,7 @@ defmodule LSP.HoverResult do
   """
 
   @typedoc ~S"""
-  # Fields
+  ## Fields
 
   * `contents`: A string containing the hover content to display.
   """

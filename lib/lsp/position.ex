@@ -5,7 +5,7 @@ defmodule LSP.Position do
   """
 
   @typedoc ~S"""
-  # Fields
+  ## Fields
 
     * `line`: Line position in a document (zero-based).
     * `character`: Character offset on a line in a document (zero-based).
