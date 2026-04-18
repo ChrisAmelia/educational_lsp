@@ -67,7 +67,7 @@ defmodule LSP.CompletionItemKind do
   def file, do: 17
   def reference, do: 18
   def folder, do: 19
-  def enumMember, do: 20
+  def enum_member, do: 20
   def constant, do: 21
   def struct, do: 22
   def event, do: 23
